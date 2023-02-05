@@ -1,0 +1,32 @@
+version: 3
+
+vars:
+  CONTAINER_IMAGE_NAME: saldin/rewards_checker
+  CONTAINER_IMAGE_TAG: {sh: git rev-parse --short HEAD}
+  CONTAINER_IMAGE: "{{.CONTAINER_IMAGE_NAME}}:{{.CONTAINER_IMAGE_TAG}}"
+  DOCKERFILE: Dockerfile
+
+tasks:
+  build:
+    desc: Build docker container image
+    cmds:
+      - docker build -t {{.CONTAINER_IMAGE}} . -f {{.DOCKERFILE}}
+
+  push:
+    desc: Push image to Docker Hub
+    deps: [build]
+    cmds:
+      - docker push {{.CONTAINER_IMAGE}}
+
+  local-run:
+    desc: Local run of docker container
+    deps: [build]
+    cmds:
+      - docker run -t --env-file .env {{.CONTAINER_IMAGE}}
+
+  deploy:
+    desc: Deploy to k8s cluster
+    dir: k8s/overlays/dev
+    deps: [push]
+    cmds:
+      - yq '.spec.jobTemplate.spec.template.spec.containers.[0].image = "docker/{{.CONTAINER_IMAGE}}"' k8s/cronjob.yml | kubectl apply -f -
