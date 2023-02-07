@@ -1,4 +1,4 @@
-FROM golang:1.19-alpine AS build
+FROM --platform=linux/amd64 golang:1.19-alpine AS build
 
 WORKDIR /build-dir
 

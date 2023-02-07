@@ -26,7 +26,7 @@ tasks:
 
   deploy:
     desc: Deploy to k8s cluster
-    dir: k8s/overlays/dev
+    dir: k8s
     deps: [push]
     cmds:
-      - yq '.spec.jobTemplate.spec.template.spec.containers.[0].image = "docker/{{.CONTAINER_IMAGE}}"' k8s/cronjob.yml | kubectl apply -f -
+      - yq '.spec.jobTemplate.spec.template.spec.containers.[0].image = "docker.io/{{.CONTAINER_IMAGE}}"' cronjob.yml | kubectl apply -f -
