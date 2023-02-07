@@ -1,0 +1,42 @@
+# kubectl apply -f k8s/cronjob.yml
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: rewards-checker
+spec:
+#  schedule: "0 */1 * * *" # every hour (see crontab.guru)
+  schedule: "* * * * *" # every min
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: rewards-checker
+              image: docker.io/saldin/rewards_checker:latest
+              imagePullPolicy: Always
+              env:
+                - name: BOT_TOKEN
+                  valueFrom:
+                    secretKeyRef:
+                      key: bot_token
+                      name: rewards-checker
+                - name: INFURA_API_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      key: infura_api_key
+                      name: rewards-checker
+                - name: ALLOWED_USER_ID
+                  valueFrom:
+                    secretKeyRef:
+                      key: allowed_tg_user
+                      name: rewards-checker
+                - name: COINAPI_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      key: coinapi_key
+                      name: rewards-checker
+                - name: ADDRESS
+                  value: "0x1583C1dBe20625d0B752d472E845FbA96D096829"
+                - name: WALLET
+                  value: "0x87f2d7e1502d98f6380cf7c108c5bfe4c73c9143"
+          restartPolicy: Never
