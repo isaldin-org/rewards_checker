@@ -7,12 +7,12 @@ import (
 	"net/http"
 )
 
-func SendToTelegram(rewards string) {
+func SendToTelegram(rewards, usdtPrice string) {
 	url := fmt.Sprintf("https://api.telegram.org/bot%s/sendMessage", botToken)
 	body := []byte(fmt.Sprintf(`{
 		"chat_id": %s,
 		"text": "%s"
-	}`, allowedUserId, rewards))
+	}`, allowedUserId, fmt.Sprintf(`%s 1INCH\n%s USDT`, rewards, usdtPrice)))
 
 	// Create a HTTP post request
 	r, err := http.NewRequest("POST", url, bytes.NewBuffer(body))
