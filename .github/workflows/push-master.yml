@@ -24,5 +24,5 @@ jobs:
           context: .
           push: true
           tags: |
-            "saldin/rewards_checker:${{ GITHUB_SHA::7 }}"
+            saldin/rewards_checker:${{ GITHUB_SHA::7 }}
             saldin/rewards_checker:latest
