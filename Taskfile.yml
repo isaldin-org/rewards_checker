@@ -5,6 +5,7 @@ vars:
   CONTAINER_IMAGE_TAG: {sh: git rev-parse --short HEAD}
   CONTAINER_IMAGE: "{{.CONTAINER_IMAGE_NAME}}:{{.CONTAINER_IMAGE_TAG}}"
   DOCKERFILE: Dockerfile
+  MINIKUBE_CONTEXT: minikube
 
 tasks:
   build:
@@ -25,8 +26,12 @@ tasks:
       - docker run -t --env-file .env {{.CONTAINER_IMAGE}}
 
   deploy:
-    desc: Deploy to k8s cluster
+    desc: Deploy to minikube k8s cluster
     dir: k8s
     deps: [push]
     cmds:
+      # if you have problems with connecting to local k8s cluster run below commands once for activating minikube:
+      # minikube update-context
+      # minikube start
+      - kubectl config use-context {{.MINIKUBE_CONTEXT}}
       - yq '.spec.jobTemplate.spec.template.spec.containers.[0].image = "docker.io/{{.CONTAINER_IMAGE}}"' cronjob.yml | kubectl apply -f -
