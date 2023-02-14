@@ -53,6 +53,7 @@ jobs:
         uses: actions/checkout@v3
 
       - uses: Azure/k8s-artifact-substitute@v1
+        id: manifests_update
         with:
           manifests: |
             k8s/cronjob.yml
@@ -63,5 +64,4 @@ jobs:
         uses: Azure/k8s-deploy@v4
         with:
           namespace: default
-          manifests: |
-            k8s/cronjob.yml
+          manifests: "${{ steps.manifests_update.outputs.manifests }}"
