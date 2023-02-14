@@ -58,4 +58,4 @@ jobs:
           namespace: default
           manifests: |
             k8s/cronjob.yml
-          images: "saldin/rewards_checker:${{ needs.docker.outputs.sha_short }}"
+          images: "docker.io/saldin/rewards_checker:${{ needs.docker.outputs.sha_short }}"
