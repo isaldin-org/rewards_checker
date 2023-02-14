@@ -58,5 +58,4 @@ jobs:
           namespace: default
           manifests: |
             k8s/cronjob.yml
-          images: |
-            ${{ needs.docker.outputs.image-name }}
+          images: "${{ needs.docker.outputs.image-name }}"
