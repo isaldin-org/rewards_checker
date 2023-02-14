@@ -36,7 +36,7 @@ func main() {
 
 	reward := GetReward()
 	usdtPrice := getUsdPrice(weiToUnit(reward), rate)
-	usdtPriceString := usdtPrice.Text('f', 0)
+	usdtPriceString := usdtPrice.Text('f', 2)
 
 	SendToTelegram(weiToUnitString(reward), usdtPriceString)
 }

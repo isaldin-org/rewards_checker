@@ -4,8 +4,8 @@ kind: CronJob
 metadata:
   name: rewards-checker
 spec:
-#  schedule: "0 */1 * * *" # every hour (see crontab.guru)
-  schedule: "* * * * *" # every min
+  schedule: "0 */1 * * *" # every hour (see crontab.guru)
+#  schedule: "* * * * *" # every min
   jobTemplate:
     spec:
       template:
