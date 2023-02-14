@@ -55,4 +55,4 @@ jobs:
         with:
           namespace: default
           manifests: |
-            k8s/cronjob.yaml
+            k8s/cronjob.yml
