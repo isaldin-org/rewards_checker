@@ -7,6 +7,7 @@ on:
 
 jobs:
   docker:
+    name: Build image and push it to the hub
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -33,3 +34,24 @@ jobs:
           tags: |
             "saldin/rewards_checker:${{ steps.vars.outputs.sha_short }}"
             saldin/rewards_checker:latest
+
+  k8s:
+    name: Deploy to k8s-cluster
+    needs: [docker]
+    steps:
+      - name: Set the k8s context
+        uses: azure/k8s-set-context@v2
+        with:
+          method: service-account
+          k8s-url: ${{ secrets.K8S_TIME4VPS_SERVER_URL }}
+          k8s-secret: ${{ secrets.K8S_TIME4VPS_SECRET }}
+
+      - name: Checkout source code
+        uses: actions/checkout@v3
+
+      - name: Deploy to the Kubernetes cluster
+        uses: azure/k8s-deploy@v1
+        with:
+          namespace: default
+          manifests: |
+            k8s/cronjob.yaml
