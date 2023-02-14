@@ -12,7 +12,7 @@ spec:
         spec:
           containers:
             - name: rewards-checker
-              image: your_image_path_here:latest
+              image: docker.io/saldin/rewards_checker:latest
               imagePullPolicy: IfNotPresent
               env:
                 - name: BOT_TOKEN

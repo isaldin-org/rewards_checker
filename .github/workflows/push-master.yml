@@ -52,10 +52,16 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v3
 
+      - uses: Azure/k8s-artifact-substitute@v1
+        with:
+          manifests: |
+            k8s/cronjob.yml
+          images: |
+            "docker.io/saldin/rewards_checker:${{ needs.docker.outputs.sha_short }}"
+
       - name: Deploy to the Kubernetes cluster
         uses: Azure/k8s-deploy@v4
         with:
           namespace: default
           manifests: |
             k8s/cronjob.yml
-          images: "docker.io/saldin/rewards_checker:${{ needs.docker.outputs.sha_short }}"
