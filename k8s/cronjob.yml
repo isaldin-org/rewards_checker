@@ -6,6 +6,8 @@ metadata:
 spec:
   schedule: "0 */1 * * *" # every hour (see crontab.guru)
 #  schedule: "* * * * *" # every min
+  successfulJobsHistoryLimit: 0
+  failedJobsHistoryLimit: 0
   jobTemplate:
     spec:
       template:
